@@ -1,0 +1,18 @@
+cuando creas una clase solamente tendras que hacerlo para las dos partes.
+Por ejemplo:
+
+.formulario{
+    padding: 20px
+}
+
+tendras que hacerlo
+
+body.light .formulario{
+    background-color: white;
+    color: black;
+}
+
+body.dark .formulario{
+    background-color: black;
+    color: white;
+}
