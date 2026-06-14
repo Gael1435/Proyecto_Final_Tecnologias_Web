@@ -1,4 +1,5 @@
 // Controlador del stepper: estado y lógica de navegación (Editor)
+import { useCallback } from 'react';
 import { useFormStepper } from '../hooks/useFormStepper';
 // Hook de router para navegación programática a /preview
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +38,11 @@ function FormStepper() {
     ];
 
     const CurrentComponent = steps[activeStep].component;
+
+    const handleValidate = useCallback(
+        (isValid) => updateStepValidity(activeStep, isValid),
+        [activeStep, updateStepValidity]
+    );
 
     return (
         <div className="editor-root flex flex-col lg:flex-row overflow-hidden h-full min-h-0">
@@ -97,7 +103,7 @@ function FormStepper() {
                 {/* Renderiza el componente del paso activo */}
                 <main className="flex-1 overflow-y-auto px-8 py-6 min-h-0">
                     <div className="w-full h-full min-h-0">
-                        <CurrentComponent onValidate={(isValid) => updateStepValidity(activeStep, isValid)} />
+                        <CurrentComponent onValidate={handleValidate} />
                     </div>
                 </main>
 

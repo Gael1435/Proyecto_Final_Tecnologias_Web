@@ -25,7 +25,10 @@ export const useFormStepper = () => {
 
     // Marca un paso como válido o inválido
     const updateStepValidity = (stepId, isValid) => {
-        setValidSteps(prev => ({ ...prev, [stepId]: isValid }));
+        setValidSteps(prev => {
+            if (prev[stepId] === isValid) return prev;
+            return { ...prev, [stepId]: isValid };
+        });
     };
 
     // Decide si se puede navegar a un paso (avanzar requiere pasos previos válidos)
