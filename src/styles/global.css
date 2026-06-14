@@ -268,3 +268,20 @@ body.dark .about-card{
 
     border: 1px solid #2c2c2c;
 }
+
+/* PDF */
+@media print {
+  @page {
+    size: A4;
+    margin: 0; 
+  }
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

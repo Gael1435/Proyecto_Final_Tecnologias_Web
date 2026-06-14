@@ -6,7 +6,7 @@ function Navbar({ theme, toggleTheme }) {
 
     return (
 
-        <nav className="navbar">
+        <nav className="navbar print:!hidden">
 
             <div className="nav-links">
 
