@@ -11,3 +11,53 @@ body.dark{
 
     color: white;
 }
+
+/* Ensure form control text is readable inside the editor for each theme */
+body.light .editor-root input,
+body.light .editor-root textarea,
+body.light .editor-root select {
+    color: black;
+    background-color: transparent;
+}
+
+body.dark .editor-root input,
+body.dark .editor-root textarea,
+body.dark .editor-root select {
+    color: white;
+    background-color: transparent;
+}
+
+/* Try to force option colors in dark mode — some browsers limit styling of native selects */
+body.dark .editor-root select option,
+body.dark .editor-root option {
+    color: #fff;
+    background-color: #0f172a; /* slate-900 */
+    -webkit-text-fill-color: #fff;
+}
+
+/* Ensure light theme options remain readable */
+body.light .editor-root select option,
+body.light .editor-root option {
+    color: #000;
+    background-color: #fff;
+    -webkit-text-fill-color: #000;
+}
+
+.editor-root ::placeholder { color: #bdbdbd; }
+
+/* Force error state border visible in both themes inside editor */
+.editor-root .border-current,
+.editor-root input.border-current,
+.editor-root textarea.border-current,
+.editor-root select.border-current {
+    border-color: #ef4444 !important; /* red-500 */
+}
+
+/* Focus/validation halo for accessibility */
+.editor-root .border-current:focus,
+.editor-root input.border-current:focus,
+.editor-root textarea.border-current:focus,
+.editor-root select.border-current:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}

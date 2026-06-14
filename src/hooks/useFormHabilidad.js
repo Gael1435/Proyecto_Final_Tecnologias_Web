@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { validarHabilidad } from '../utils/Editor/validarHabilidad';
 import { useLocalStorage } from './useLocalStorage';
 
+// Hook para gestionar el estado del formulario de habilidades (lista, formulario y validaciones)
+
 export const useFormHabilidad = (onValidate) => {
     const [habilidades, setHabilidades] = useLocalStorage('cv_habilidades', []);
     const [datos, setDatos] = useLocalStorage('cv_habilidad', {
@@ -18,6 +20,7 @@ export const useFormHabilidad = (onValidate) => {
         }
     }, [habilidades, onValidate]);
 
+    // Actualiza un campo del formulario y limpia error si existe
     const cambiarEntrada = (e) => {
         const { name, value } = e.target;
         setDatos(prev => ({ ...prev, [name]: value }));
@@ -26,6 +29,7 @@ export const useFormHabilidad = (onValidate) => {
         }
     };
 
+    // Valida y añade una habilidad a la lista
     const agregarHabilidad = (e) => {
         e.preventDefault();
         const nuevosErrores = validarHabilidad(datos);
@@ -45,13 +49,21 @@ export const useFormHabilidad = (onValidate) => {
         setErrores({});
     };
 
-    const eliminarHabilidad = (id) => {
-        setHabilidades(habilidades.filter(h => h.id !== id));
+    // Elimina una habilidad por id (obtenido desde data-id)
+    const eliminarHabilidad = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        setHabilidades(habilidades.filter(h => String(h.id) !== String(id)));
     };
 
-    const editarHabilidad = (habilidad) => {
+    // Carga una habilidad en el formulario para editarla
+    const editarHabilidad = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        const habilidad = habilidades.find(h => String(h.id) === String(id));
+        if (!habilidad) return;
         setDatos(habilidad);
-        setHabilidades(habilidades.filter(h => h.id !== habilidad.id));
+        setHabilidades(habilidades.filter(h => String(h.id) !== String(id)));
     };
 
     return {

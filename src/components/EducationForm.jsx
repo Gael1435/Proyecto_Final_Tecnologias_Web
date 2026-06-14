@@ -1,6 +1,8 @@
+// Formulario de educación: estado y validación (Editor)
 import { useFormEducacion } from '../hooks/useFormEducacion';
 
 function EducationForm({ onValidate }) {
+    // Initialize education hook (data, handlers)
     const {
         educaciones,
         datos,
@@ -15,6 +17,7 @@ function EducationForm({ onValidate }) {
 
     return (
         <div className="w-full">
+                {/* Sección de educación y formulario */}
                 <h1 className="text-2xl font-bold mb-6">Educación</h1>
 
                 <div className="p-4 rounded border border-gray-200 dark:border-gray-700 mb-6">
@@ -22,122 +25,17 @@ function EducationForm({ onValidate }) {
                     
                     <form onSubmit={agregarEducacion} className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="institucion" className="block text-sm mb-1">
-                                    Institución <span className="font-semibold">*</span>
-                                </label>
-                                <input 
-                                    id="institucion" 
-                                    type="text" 
-                                    name="institucion"
-                                    value={datos.institucion}
-                                    onChange={cambiarEntrada}
-                                    placeholder="Universidad" 
-                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.institucion ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                                />
-                                {errores.institucion && <p className="text-xs mt-1">{errores.institucion}</p>}
-                            </div>
-
-                            <div>
-                                <label htmlFor="titulo" className="block text-sm mb-1">
-                                    Título <span className="font-semibold">*</span>
-                                </label>
-                                <input 
-                                    id="titulo" 
-                                    type="text" 
-                                    name="titulo"
-                                    value={datos.titulo}
-                                    onChange={cambiarEntrada}
-                                    placeholder="Licenciatura" 
-                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.titulo ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                                />
-                                {errores.titulo && <p className="text-xs mt-1">{errores.titulo}</p>}
-                            </div>
+                            <div> <label htmlFor="institucion" className="block text-sm mb-1">Institución <span className="font-semibold">*</span></label><input id="institucion" type="text" name="institucion" value={datos.institucion} onChange={cambiarEntrada} placeholder="Universidad" className={`w-full px-3 py-2 border rounded text-sm ${errores.institucion ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.institucion && <p className="text-xs mt-1">{errores.institucion}</p>} </div>
+                            <div> <label htmlFor="titulo" className="block text-sm mb-1">Título <span className="font-semibold">*</span></label><input id="titulo" type="text" name="titulo" value={datos.titulo} onChange={cambiarEntrada} placeholder="Licenciatura" className={`w-full px-3 py-2 border rounded text-sm ${errores.titulo ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.titulo && <p className="text-xs mt-1">{errores.titulo}</p>} </div>
                         </div>
 
-                        <div>
-                            <label htmlFor="carrera" className="block text-sm mb-1">
-                                Carrera
-                            </label>
-                            <input 
-                                id="carrera" 
-                                type="text" 
-                                name="carrera"
-                                value={datos.carrera}
-                                onChange={cambiarEntrada}
-                                placeholder="Ingeniería en Sistemas" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                            />
-                        </div>
+                        <div> <label htmlFor="carrera" className="block text-sm mb-1">Carrera</label><input id="carrera" type="text" name="carrera" value={datos.carrera} onChange={cambiarEntrada} placeholder="Ingeniería en Sistemas" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div>
-                                <label htmlFor="fechaInicio" className="block text-sm mb-1">
-                                    Inicio
-                                </label>
-                                <input 
-                                    id="fechaInicio" 
-                                    type="month" 
-                                    name="fechaInicio"
-                                    value={datos.fechaInicio}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"> <div><label htmlFor="fechaInicio" className="block text-sm mb-1">Inicio</label><input id="fechaInicio" type="month" name="fechaInicio" value={datos.fechaInicio} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="fechaFin" className="block text-sm mb-1">Fin</label><input id="fechaFin" type="month" name="fechaFin" value={datos.fechaFin} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="estado" className="block text-sm mb-1">Estado</label><select id="estado" name="estado" value={datos.estado} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm">{estados.map(e => (<option key={e} value={e}>{e}</option>))}</select></div> </div>
 
-                            <div>
-                                <label htmlFor="fechaFin" className="block text-sm mb-1">
-                                    Fin
-                                </label>
-                                <input 
-                                    id="fechaFin" 
-                                    type="month" 
-                                    name="fechaFin"
-                                    value={datos.fechaFin}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
+                        <div> <label htmlFor="descripcion" className="block text-sm mb-1">Descripción</label><textarea id="descripcion" name="descripcion" value={datos.descripcion} onChange={cambiarEntrada} rows="2" placeholder="Detalles..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm resize-none" /></div>
 
-                            <div>
-                                <label htmlFor="estado" className="block text-sm mb-1">
-                                    Estado
-                                </label>
-                                <select 
-                                    id="estado" 
-                                    name="estado"
-                                    value={datos.estado}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                >
-                                    {estados.map(e => (
-                                        <option key={e} value={e}>{e}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label htmlFor="descripcion" className="block text-sm mb-1">
-                                Descripción
-                            </label>
-                            <textarea 
-                                id="descripcion" 
-                                name="descripcion"
-                                value={datos.descripcion}
-                                onChange={cambiarEntrada}
-                                rows="2"
-                                placeholder="Detalles..." 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm resize-none"
-                            />
-                        </div>
-
-                        <button 
-                            type="submit" 
-                            className="px-3 py-2 rounded text-sm"
-                        >
-                            Agregar
-                        </button>
+                    <button type="submit" className="px-4 py-2 rounded-full text-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800">Agregar</button>
                     </form>
                 </div>
 
@@ -175,18 +73,8 @@ function EducationForm({ onValidate }) {
                                     </div>
 
                                     <div className="flex gap-2 ml-3">
-                                        <button 
-                                            onClick={() => editarEducacion(education)}
-                                            className="text-xs"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button 
-                                            onClick={() => eliminarEducacion(education.id)}
-                                            className="text-xs"
-                                        >
-                                            Eliminar
-                                        </button>
+                                        <button type="button" data-id={education.id} onClick={editarEducacion} className="text-xs">Editar</button>
+                                        <button type="button" data-id={education.id} onClick={eliminarEducacion} className="text-xs">Eliminar</button>
                                     </div>
                                 </div>
                             ))}

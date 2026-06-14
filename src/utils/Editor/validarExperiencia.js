@@ -1,15 +1,11 @@
+// Valida campos obligatorios para una experiencia laboral (Editor)
+import { required } from './validationHelpers';
+
 export const validarExperiencia = (data) => {
-  const errors = {};
-
-  if (!data.empresa || data.empresa.trim() === '') {
-    errors.empresa = 'La empresa es obligatoria';
-  }
-
-  if (!data.puesto || data.puesto.trim() === '') {
-    errors.puesto = 'El puesto es obligatorio';
-  }
-
-  return errors;
+  return required([
+    { name: 'empresa', message: 'La empresa es obligatoria' },
+    { name: 'puesto', message: 'El puesto es obligatorio' }
+  ], data);
 };
 
 export const esExperienciaCompleta = (data) => {

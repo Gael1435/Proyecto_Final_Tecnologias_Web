@@ -1,15 +1,11 @@
+// Valida campos obligatorios para una entrada de educación (Editor)
+import { required } from './validationHelpers';
+
 export const validarEducacion = (data) => {
-  const errors = {};
-
-  if (!data.institucion || data.institucion.trim() === '') {
-    errors.institucion = 'La institución es obligatoria';
-  }
-
-  if (!data.titulo || data.titulo.trim() === '') {
-    errors.titulo = 'El título es obligatorio';
-  }
-
-  return errors;
+  return required([
+    { name: 'institucion', message: 'La institución es obligatoria' },
+    { name: 'titulo', message: 'El título es obligatorio' }
+  ], data);
 };
 
 export const esEducacionCompleta = (data) => {

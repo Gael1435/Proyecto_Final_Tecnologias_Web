@@ -1,30 +1,21 @@
+// Valida campos personales y formatos (email, teléfono) usados en el Editor
+import { required } from './validationHelpers';
+
 export const validarPersonal = (data) => {
-  const errors = {};
+  const errors = required([
+    { name: 'nombre', message: 'El nombre es obligatorio' },
+    { name: 'carrera', message: 'La carrera es obligatoria' },
+    { name: 'ciudad', message: 'La ciudad es obligatoria' },
+    { name: 'email', message: 'El email es obligatorio' },
+    { name: 'descripcion', message: 'La descripción es obligatoria' }
+  ], data);
 
-  if (!data.nombre || data.nombre.trim() === '') {
-    errors.nombre = 'El nombre es obligatorio';
-  }
-
-  if (!data.carrera || data.carrera.trim() === '') {
-    errors.carrera = 'La carrera es obligatoria';
-  }
-
-  if (!data.ciudad || data.ciudad.trim() === '') {
-    errors.ciudad = 'La ciudad es obligatoria';
-  }
-
-  if (!data.email || data.email.trim() === '') {
-    errors.email = 'El email es obligatorio';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.email = 'Email inválido';
   }
 
   if (data.telefono && !/^[\d\s\-\+\(\)]{7,}$/.test(data.telefono)) {
     errors.telefono = 'Teléfono inválido';
-  }
-
-  if (!data.descripcion || data.descripcion.trim() === '') {
-    errors.descripcion = 'La descripción es obligatoria';
   }
 
   return errors;

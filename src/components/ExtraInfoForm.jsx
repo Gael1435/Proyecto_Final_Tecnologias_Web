@@ -1,6 +1,8 @@
+// Formulario de experiencia laboral: estado y validación (Editor)
 import { useFormExperiencia } from '../hooks/useFormExperiencia';
 
 function ExtraInfoForm({ onValidate }) {
+    // Initialize experience hook (list, form data, handlers)
     const {
         experiencias,
         datos,
@@ -15,110 +17,18 @@ function ExtraInfoForm({ onValidate }) {
 
     return (
         <div className="w-full">
+                {/* Sección de experiencia y formulario */}
                 <h1 className="text-2xl font-bold mb-6">Experiencia Laboral</h1>
 
                 <div className="p-4 rounded border border-gray-200 dark:border-gray-700 mb-6">
                     <h2 className="text-base font-semibold mb-4">Agregar Experiencia</h2>
                     
                     <form onSubmit={agregarExperiencia} className="space-y-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="empresa" className="block text-sm mb-1">
-                                    Empresa <span className="font-semibold">*</span>
-                                </label>
-                                <input 
-                                    id="empresa" 
-                                    type="text" 
-                                    name="empresa"
-                                    value={datos.empresa}
-                                    onChange={cambiarEntrada}
-                                    placeholder="Nombre empresa" 
-                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.empresa ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                                />
-                                {errores.empresa && <p className="text-xs mt-1">{errores.empresa}</p>}
-                            </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div> <label htmlFor="empresa" className="block text-sm mb-1">Empresa <span className="font-semibold">*</span></label><input id="empresa" type="text" name="empresa" value={datos.empresa} onChange={cambiarEntrada} placeholder="Nombre empresa" className={`w-full px-3 py-2 border rounded text-sm ${errores.empresa ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.empresa && <p className="text-xs mt-1">{errores.empresa}</p>} </div> <div> <label htmlFor="puesto" className="block text-sm mb-1">Puesto <span className="font-semibold">*</span></label><input id="puesto" type="text" name="puesto" value={datos.puesto} onChange={cambiarEntrada} placeholder="Desarrollador" className={`w-full px-3 py-2 border rounded text-sm ${errores.puesto ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.puesto && <p className="text-xs mt-1">{errores.puesto}</p>} </div> </div>
 
-                            <div>
-                                <label htmlFor="puesto" className="block text-sm mb-1">
-                                    Puesto <span className="font-semibold">*</span>
-                                </label>
-                                <input 
-                                    id="puesto" 
-                                    type="text" 
-                                    name="puesto"
-                                    value={datos.puesto}
-                                    onChange={cambiarEntrada}
-                                    placeholder="Desarrollador" 
-                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.puesto ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                                />
-                                {errores.puesto && <p className="text-xs mt-1">{errores.puesto}</p>}
-                            </div>
-                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="tipo" className="block text-sm mb-1">Tipo</label><select id="tipo" name="tipo" value={datos.tipo} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm">{tipos.map(t => (<option key={t} value={t}>{t}</option>))}</select></div> <div><label htmlFor="ubicacion" className="block text-sm mb-1">Ubicación</label><input id="ubicacion" type="text" name="ubicacion" value={datos.ubicacion} onChange={cambiarEntrada} placeholder="Ciudad, País" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="tipo" className="block text-sm mb-1">
-                                    Tipo
-                                </label>
-                                <select 
-                                    id="tipo" 
-                                    name="tipo"
-                                    value={datos.tipo}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                >
-                                    {tipos.map(t => (
-                                        <option key={t} value={t}>{t}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div>
-                                <label htmlFor="ubicacion" className="block text-sm mb-1">
-                                    Ubicación
-                                </label>
-                                <input 
-                                    id="ubicacion" 
-                                    type="text" 
-                                    name="ubicacion"
-                                    value={datos.ubicacion}
-                                    onChange={cambiarEntrada}
-                                    placeholder="Ciudad, País" 
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="fechaInicio" className="block text-sm mb-1">
-                                    Inicio
-                                </label>
-                                <input 
-                                    id="fechaInicio" 
-                                    type="month" 
-                                    name="fechaInicio"
-                                    value={datos.fechaInicio}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="fechaFin" className="block text-sm mb-1">
-                                    Fin
-                                </label>
-                                <input 
-                                    id="fechaFin" 
-                                    type="month" 
-                                    name="fechaFin"
-                                    value={datos.fechaFin}
-                                    onChange={cambiarEntrada}
-                                    disabled={datos.presente}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                                />
-                            </div>
-                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="fechaInicio" className="block text-sm mb-1">Inicio</label><input id="fechaInicio" type="month" name="fechaInicio" value={datos.fechaInicio} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="fechaFin" className="block text-sm mb-1">Fin</label><input id="fechaFin" type="month" name="fechaFin" value={datos.fechaFin} onChange={cambiarEntrada} disabled={datos.presente} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed" /></div> </div>
 
                         <div className="flex items-center gap-2">
                             <input 
@@ -134,27 +44,9 @@ function ExtraInfoForm({ onValidate }) {
                             </label>
                         </div>
 
-                        <div>
-                            <label htmlFor="descripcion" className="block text-sm mb-1">
-                                Descripción
-                            </label>
-                            <textarea 
-                                id="descripcion" 
-                                name="descripcion"
-                                value={datos.descripcion}
-                                onChange={cambiarEntrada}
-                                rows="2"
-                                placeholder="Responsabilidades..." 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm resize-none"
-                            />
-                        </div>
+                        <div> <label htmlFor="descripcion" className="block text-sm mb-1">Descripción</label><textarea id="descripcion" name="descripcion" value={datos.descripcion} onChange={cambiarEntrada} rows="2" placeholder="Responsabilidades..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm resize-none" /></div>
 
-                        <button 
-                            type="submit" 
-                            className="px-3 py-2 rounded text-sm"
-                        >
-                            Agregar
-                        </button>
+                    <button type="submit" className="px-4 py-2 rounded-full text-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800">Agregar</button>
                     </form>
                 </div>
 
@@ -191,20 +83,7 @@ function ExtraInfoForm({ onValidate }) {
                                         )}
                                     </div>
 
-                                    <div className="flex gap-2 ml-3">
-                                        <button 
-                                            onClick={() => editarExperiencia(experience)}
-                                            className="text-xs"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button 
-                                            onClick={() => eliminarExperiencia(experience.id)}
-                                            className="text-xs"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </div>
+                                    <div className="flex gap-2 ml-3"> <button type="button" data-id={experience.id} onClick={editarExperiencia} className="text-xs">Editar</button> <button type="button" data-id={experience.id} onClick={eliminarExperiencia} className="text-xs">Eliminar</button> </div>
                                 </div>
                             ))}
                         </div>

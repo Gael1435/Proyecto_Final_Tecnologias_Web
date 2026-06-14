@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { validarPersonal } from '../utils/Editor/validarPersonal';
 import { useLocalStorage } from './useLocalStorage';
 
+// Hook para gestionar datos personales, imagen de perfil y validaciones
+
 export const useFormPersonal = (onValidate) => {
     const [prevImagen, setPrevImagen] = useLocalStorage('cv_personal_imagen', null);
     const [datos, setDatos] = useLocalStorage('cv_personal', {
@@ -27,6 +29,7 @@ export const useFormPersonal = (onValidate) => {
         }
     }, [datos, onValidate]);
 
+    // Convierte archivo seleccionado a dataURL y lo guarda como preview
     const cambiarImagen = (e) => {
         const archivo = e.target.files[0];
         if (archivo) {
@@ -36,6 +39,7 @@ export const useFormPersonal = (onValidate) => {
         }
     };
 
+    // Actualiza campo del formulario y limpia error si existe
     const cambiarEntrada = (e) => {
         const { name, value } = e.target;
         setDatos(prev => ({ ...prev, [name]: value }));
@@ -44,7 +48,10 @@ export const useFormPersonal = (onValidate) => {
         }
     };
 
-    const validarAlDesenfoque = (campo) => {
+    // Valida un solo campo al perder el foco
+    const validarAlDesenfoque = (e) => {
+        const campo = e?.target?.name;
+        if (!campo) return;
         const nuevosErrores = validarPersonal(datos);
         setErrores(prev => ({
             ...prev,

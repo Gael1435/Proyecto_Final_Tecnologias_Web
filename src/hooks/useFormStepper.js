@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
+// Controla el stepper del editor: paso activo, navegación secuencial y validez por paso
+
 const initialValidSteps = {
     0: false,
     1: false,
@@ -21,12 +23,21 @@ export const useFormStepper = () => {
         }
     }, [activeStep, visitedSteps, setVisitedSteps]);
 
+    // Marca un paso como válido o inválido
     const updateStepValidity = (stepId, isValid) => {
         setValidSteps(prev => ({ ...prev, [stepId]: isValid }));
     };
 
+    // Decide si se puede navegar a un paso (avanzar requiere pasos previos válidos)
     const canNavigate = (stepId) => {
-        return visitedSteps.includes(stepId) || stepId === activeStep;
+        if (stepId === activeStep) return true; // permanecer
+        if (stepId < activeStep) return true; // retroceder
+
+        // avanzar solo si todos los anteriores están validados
+        for (let i = 0; i < stepId; i++) {
+            if (!validSteps[i]) return false;
+        }
+        return true;
     };
 
     const handleNext = () => {
@@ -47,6 +58,16 @@ export const useFormStepper = () => {
             if (menuOpen) setMenuOpen(false);
         }
     };
+
+    const handleStepClickEvent = (e) => {
+        const stepId = Number(e.currentTarget?.dataset?.step);
+        if (Number.isNaN(stepId)) return;
+        handleStepClick(stepId);
+    };
+
+    const closeMenu = () => setMenuOpen(false);
+
+    const toggleMenu = () => setMenuOpen(prev => !prev);
 
     const resetAll = () => {
         const keys = [
@@ -81,8 +102,11 @@ export const useFormStepper = () => {
         handleNext,
         handlePrev,
         handleStepClick,
+        handleStepClickEvent,
         resetAll,
         setMenuOpen,
+        closeMenu,
+        toggleMenu,
         updateStepValidity,
         canNavigate
     };

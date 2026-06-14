@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { validarEducacion } from '../utils/Editor/validarEducacion';
 import { useLocalStorage } from './useLocalStorage';
 
+// Hook para gestionar el formulario de educación (lista, datos y validación)
+
 export const useFormEducacion = (onValidate) => {
     const [educaciones, setEducaciones] = useLocalStorage('cv_educacion', []);
     const [datos, setDatos] = useLocalStorage('cv_educacion_datos', {
@@ -21,6 +23,7 @@ export const useFormEducacion = (onValidate) => {
         }
     }, [educaciones, onValidate]);
 
+    // Actualiza un campo del formulario y borra error existente
     const cambiarEntrada = (e) => {
         const { name, value } = e.target;
         setDatos(prev => ({ ...prev, [name]: value }));
@@ -29,6 +32,7 @@ export const useFormEducacion = (onValidate) => {
         }
     };
 
+    // Valida y añade una nueva educación a la lista
     const agregarEducacion = (e) => {
         e.preventDefault();
         const nuevosErrores = validarEducacion(datos);
@@ -51,13 +55,21 @@ export const useFormEducacion = (onValidate) => {
         setErrores({});
     };
 
-    const eliminarEducacion = (id) => {
-        setEducaciones(educaciones.filter(e => e.id !== id));
+    // Elimina una educación por id (data-id)
+    const eliminarEducacion = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        setEducaciones(educaciones.filter(ed => String(ed.id) !== String(id)));
     };
 
-    const editarEducacion = (educacion) => {
+    // Carga una educación en el formulario para editarla
+    const editarEducacion = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        const educacion = educaciones.find(ed => String(ed.id) === String(id));
+        if (!educacion) return;
         setDatos(educacion);
-        setEducaciones(educaciones.filter(e => e.id !== educacion.id));
+        setEducaciones(educaciones.filter(ed => String(ed.id) !== String(id)));
     };
 
     return {

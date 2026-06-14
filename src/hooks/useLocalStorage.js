@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+// Hook que sincroniza un estado de React con localStorage usando una clave
 export const useLocalStorage = (key, initialValue) => {
     const [storedValue, setStoredValue] = useState(() => {
         if (typeof globalThis.localStorage === 'undefined') {
@@ -15,6 +16,7 @@ export const useLocalStorage = (key, initialValue) => {
         }
     });
 
+    // Guarda en localStorage cuando cambia el valor
     useEffect(() => {
         if (typeof globalThis.localStorage === 'undefined') {
             return;

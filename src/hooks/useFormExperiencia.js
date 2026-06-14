@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { validarExperiencia } from '../utils/Editor/validarExperiencia';
 import { useLocalStorage } from './useLocalStorage';
 
+// Hook para gestionar experiencias laborales: lista, formulario y validación
+
 export const useFormExperiencia = (onValidate) => {
     const [experiencias, setExperiencias] = useLocalStorage('cv_experiencias', []);
     
@@ -24,6 +26,7 @@ export const useFormExperiencia = (onValidate) => {
         }
     }, [experiencias, onValidate]);
 
+    // Actualiza campos del formulario (maneja checkboxes)
     const cambiarEntrada = (e) => {
         const { name, value, type, checked } = e.target;
         const valorFinal = type === 'checkbox' ? checked : value;
@@ -33,6 +36,7 @@ export const useFormExperiencia = (onValidate) => {
         }
     };
 
+    // Valida y agrega una experiencia a la lista
     const agregarExperiencia = (e) => {
         e.preventDefault();
         const nuevosErrores = validarExperiencia(datos);
@@ -56,13 +60,21 @@ export const useFormExperiencia = (onValidate) => {
         setErrores({});
     };
 
-    const eliminarExperiencia = (id) => {
-        setExperiencias(experiencias.filter(e => e.id !== id));
+    // Elimina una experiencia por id (data-id)
+    const eliminarExperiencia = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        setExperiencias(experiencias.filter(exp => String(exp.id) !== String(id)));
     };
 
-    const editarExperiencia = (experiencia) => {
+    // Carga una experiencia en el formulario para editarla
+    const editarExperiencia = (e) => {
+        const id = e.currentTarget?.dataset?.id;
+        if (!id) return;
+        const experiencia = experiencias.find(exp => String(exp.id) === String(id));
+        if (!experiencia) return;
         setDatos(experiencia);
-        setExperiencias(experiencias.filter(e => e.id !== experiencia.id));
+        setExperiencias(experiencias.filter(exp => String(exp.id) !== String(id)));
     };
 
     return {

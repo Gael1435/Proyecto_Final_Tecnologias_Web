@@ -1,6 +1,8 @@
+// Formulario de proyectos: estado, validaciones y manejadores (Editor)
 import { useFormProyecto } from '../hooks/useFormProyecto';
 
 function ProjectForm({ onValidate }) {
+    // Initialize projects hook (list, form data, handlers)
     const {
         proyectos,
         datos,
@@ -13,144 +15,31 @@ function ProjectForm({ onValidate }) {
 
     return (
         <div className="w-full">
+                {/* Sección de proyectos y formulario */}
                 <h1 className="text-2xl font-bold mb-6">Proyectos</h1>
 
                 <div className="p-4 rounded border border-gray-200 dark:border-gray-700 mb-6">
                     <h2 className="text-base font-semibold mb-4">Agregar Proyecto</h2>
                     
+                    {/* Formulario para agregar proyecto */}
                     <form onSubmit={agregarProyecto} className="space-y-4">
-                        <div>
-                            <label htmlFor="nombre" className="block text-sm mb-1">
-                                Nombre <span className="font-semibold">*</span>
-                            </label>
-                            <input 
-                                id="nombre" 
-                                type="text" 
-                                name="nombre"
-                                value={datos.nombre}
-                                onChange={cambiarEntrada}
-                                placeholder="Nombre del proyecto" 
-                                className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                            />
-                            {errores.nombre && <p className="text-xs mt-1">{errores.nombre}</p>}
-                        </div>
+                        <div> <label htmlFor="nombre" className="block text-sm mb-1">Nombre <span className="font-semibold">*</span></label><input id="nombre" type="text" name="nombre" value={datos.nombre} onChange={cambiarEntrada} placeholder="Nombre del proyecto" className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.nombre && <p className="text-xs mt-1">{errores.nombre}</p>} </div>
 
-                        <div>
-                            <label htmlFor="descripcion" className="block text-sm mb-1">
-                                Descripción <span className="font-semibold">*</span>
-                            </label>
-                            <textarea 
-                                id="descripcion" 
-                                name="descripcion"
-                                value={datos.descripcion}
-                                onChange={cambiarEntrada}
-                                rows="2"
-                                placeholder="Descripción..." 
-                                className={`w-full px-3 py-2 border rounded text-sm resize-none ${errores.descripcion ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`}
-                            />
-                            {errores.descripcion && <p className="text-xs mt-1">{errores.descripcion}</p>}
-                        </div>
+                        <div> <label htmlFor="descripcion" className="block text-sm mb-1">Descripción <span className="font-semibold">*</span></label><textarea id="descripcion" name="descripcion" value={datos.descripcion} onChange={cambiarEntrada} rows="2" placeholder="Descripción..." className={`w-full px-3 py-2 border rounded text-sm resize-none ${errores.descripcion ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.descripcion && <p className="text-xs mt-1">{errores.descripcion}</p>} </div>
 
-                        <div>
-                            <label htmlFor="tecnologias" className="block text-sm mb-1">
-                                Tecnologías (separadas por comas)
-                            </label>
-                            <input 
-                                id="tecnologias" 
-                                type="text" 
-                                name="tecnologias"
-                                value={datos.tecnologias}
-                                onChange={cambiarEntrada}
-                                placeholder="React, Node.js, MongoDB" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                            />
-                        </div>
+                        <div> <label htmlFor="tecnologias" className="block text-sm mb-1">Tecnologías (separadas por comas)</label><input id="tecnologias" type="text" name="tecnologias" value={datos.tecnologias} onChange={cambiarEntrada} placeholder="React, Node.js, MongoDB" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="enlace" className="block text-sm mb-1">
-                                    Enlace del Proyecto
-                                </label>
-                                <input 
-                                    id="enlace" 
-                                    type="url" 
-                                    name="enlace"
-                                    value={datos.enlace}
-                                    onChange={cambiarEntrada}
-                                    placeholder="https://proyecto.com" 
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="enlace" className="block text-sm mb-1">Enlace del Proyecto</label><input id="enlace" type="url" name="enlace" value={datos.enlace} onChange={cambiarEntrada} placeholder="https://proyecto.com" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="github" className="block text-sm mb-1">GitHub</label><input id="github" type="url" name="github" value={datos.github} onChange={cambiarEntrada} placeholder="https://github.com/usuario/repo" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> </div>
 
-                            <div>
-                                <label htmlFor="github" className="block text-sm mb-1">
-                                    GitHub
-                                </label>
-                                <input 
-                                    id="github" 
-                                    type="url" 
-                                    name="github"
-                                    value={datos.github}
-                                    onChange={cambiarEntrada}
-                                    placeholder="https://github.com/usuario/repo" 
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
-                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="fechaInicio" className="block text-sm mb-1">Inicio</label><input id="fechaInicio" type="month" name="fechaInicio" value={datos.fechaInicio} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="fechaFin" className="block text-sm mb-1">Fin</label><input id="fechaFin" type="month" name="fechaFin" value={datos.fechaFin} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label htmlFor="fechaInicio" className="block text-sm mb-1">
-                                    Inicio
-                                </label>
-                                <input 
-                                    id="fechaInicio" 
-                                    type="month" 
-                                    name="fechaInicio"
-                                    value={datos.fechaInicio}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
+                        <div className="flex items-center gap-2"><input id="destacado" type="checkbox" name="destacado" checked={datos.destacado} onChange={cambiarEntrada} className="w-4 h-4" /><label htmlFor="destacado" className="text-sm">Marcar como destacado</label></div>
 
-                            <div>
-                                <label htmlFor="fechaFin" className="block text-sm mb-1">
-                                    Fin
-                                </label>
-                                <input 
-                                    id="fechaFin" 
-                                    type="month" 
-                                    name="fechaFin"
-                                    value={datos.fechaFin}
-                                    onChange={cambiarEntrada}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <input 
-                                id="destacado" 
-                                type="checkbox" 
-                                name="destacado"
-                                checked={datos.destacado}
-                                onChange={cambiarEntrada}
-                                className="w-4 h-4"
-                            />
-                            <label htmlFor="destacado" className="text-sm">
-                                Marcar como destacado
-                            </label>
-                        </div>
-
-                        <button 
-                            type="submit" 
-                            className="px-3 py-2 rounded text-sm"
-                        >
-                            Agregar
-                        </button>
+                        <button type="submit" className="px-4 py-2 rounded-full text-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800">Agregar</button>
                     </form>
                 </div>
 
+                {/* Lista de proyectos guardados */}
                 <div className="p-4 rounded border border-gray-200 dark:border-gray-700">
                     <h2 className="text-base font-semibold mb-4">
                         Proyectos ({proyectos.length})
@@ -171,20 +60,7 @@ function ProjectForm({ onValidate }) {
                                                 {project.nombre} {project.destacado && <span className="text-xs px-2 py-1 rounded">Destacado</span>}
                                             </div>
                                         </div>
-                                        <div className="flex gap-2">
-                                            <button 
-                                                onClick={() => editarProyecto(project)}
-                                                className="text-xs"
-                                            >
-                                                Editar
-                                            </button>
-                                            <button 
-                                                onClick={() => eliminarProyecto(project.id)}
-                                                className="text-xs"
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </div>
+                                        <div className="flex gap-2"> <button type="button" data-id={project.id} onClick={editarProyecto} className="text-xs">Editar</button> <button type="button" data-id={project.id} onClick={eliminarProyecto} className="text-xs">Eliminar</button> </div>
                                     </div>
 
                                     <p className="text-xs mb-2">

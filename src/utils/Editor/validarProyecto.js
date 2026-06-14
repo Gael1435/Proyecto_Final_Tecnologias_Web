@@ -1,15 +1,11 @@
+// Valida campos obligatorios para proyectos (Editor)
+import { required } from './validationHelpers';
+
 export const validarProyecto = (data) => {
-  const errors = {};
-
-  if (!data.nombre || data.nombre.trim() === '') {
-    errors.nombre = 'El nombre es obligatorio';
-  }
-
-  if (!data.descripcion || data.descripcion.trim() === '') {
-    errors.descripcion = 'La descripción es obligatoria';
-  }
-
-  return errors;
+  return required([
+    { name: 'nombre', message: 'El nombre es obligatorio' },
+    { name: 'descripcion', message: 'La descripción es obligatoria' }
+  ], data);
 };
 
 export const esProyectoCompleto = (data) => {
