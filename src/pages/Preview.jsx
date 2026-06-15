@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage'; 
+import SkillCard from '../components/SkillCard';
+import ProjectCard from '../components/ProjectCard';
 
 function Preview() {
     const [personal] = useLocalStorage('cv_personal', {});
@@ -70,9 +72,7 @@ function Preview() {
                             <h2 className="text-xs tracking-widest uppercase font-bold text-slate-400 mb-4 border-b border-slate-600 pb-1">Habilidades</h2>
                             <div className="flex flex-wrap gap-1.5">
                                 {habilidades.map((hab) => (
-                                    <span key={hab.id} className="bg-slate-700/60 text-[11px] px-2 py-1 rounded font-medium">
-                                        {hab.nombre}
-                                    </span>
+                                    <SkillCard key={hab.id} skill={hab} />
                                 ))}
                             </div>
                         </div>
@@ -124,16 +124,7 @@ function Preview() {
                             </h3>
                             <div className="grid grid-cols-1 gap-3">
                                 {proyectos.map(proj => (
-                                    <div key={proj.id} className="border border-slate-100 p-3 rounded bg-slate-50/50">
-                                        <div className="flex justify-between items-start mb-1">
-                                            <h4 className="text-xs font-bold text-slate-800">{proj.nombre}</h4>
-                                            <span className="text-[10px] text-slate-400 font-medium">{proj.fechaInicio}</span>
-                                        </div>
-                                        {proj.descripcion && <p className="text-[11px] text-slate-500 mb-1.5 leading-relaxed">{proj.descripcion}</p>}
-                                        {proj.tecnologias && (
-                                            <p className="text-[10px] font-mono font-semibold text-blue-600">{proj.tecnologias}</p>
-                                        )}
-                                    </div>
+                                    <ProjectCard key={proj.id} project={proj} />
                                 ))}
                             </div>
                         </section>
