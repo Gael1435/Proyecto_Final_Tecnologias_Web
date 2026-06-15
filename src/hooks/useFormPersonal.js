@@ -22,6 +22,14 @@ export const useFormPersonal = (onValidate) => {
         enlacePersonal: ''
     });
     const [errores, setErrores] = useState({});
+    // Inicializar errores a partir de los datos cargados (por ejemplo tras
+    // recargar la página) para que los campos inválidos muestren el borde rojo
+    // sin necesidad de que el usuario vuelva a interactuar con cada campo.
+    useEffect(() => {
+        const initial = validarPersonal(datos);
+        setErrores(initial);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (onValidate) {

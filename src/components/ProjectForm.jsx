@@ -1,5 +1,6 @@
 // Formulario de proyectos: estado, validaciones y manejadores (Editor)
 import { useFormProyecto } from '../hooks/useFormProyecto';
+import { validarProyectoExtras } from '../utils/Editor/validarProyecto';
 
 function ProjectForm({ onValidate }) {
     // Initialize projects hook (list, form data, handlers)
@@ -10,7 +11,8 @@ function ProjectForm({ onValidate }) {
         cambiarEntrada,
         agregarProyecto,
         eliminarProyecto,
-        editarProyecto
+        editarProyecto,
+        setErrores
     } = useFormProyecto(onValidate);
 
     return (
@@ -23,13 +25,77 @@ function ProjectForm({ onValidate }) {
                     
                     {/* Formulario para agregar proyecto */}
                     <form onSubmit={agregarProyecto} className="space-y-4">
-                        <div> <label htmlFor="nombre" className="block text-sm mb-1">Nombre <span className="font-semibold">*</span></label><input id="nombre" type="text" name="nombre" value={datos.nombre} onChange={cambiarEntrada} placeholder="Nombre del proyecto" className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.nombre && <p className="text-xs mt-1">{errores.nombre}</p>} </div>
+                        <div>
+                            <label htmlFor="nombre" className="block text-sm mb-1">Nombre <span className="font-semibold">*</span></label>
+                            <input
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                value={datos.nombre}
+                                onChange={cambiarEntrada}
+                                placeholder="Nombre del proyecto"
+                                aria-invalid={!!errores.nombre}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.nombre && <p className="field-error" role="alert">{errores.nombre}</p>}
+                        </div>
 
-                        <div> <label htmlFor="descripcion" className="block text-sm mb-1">Descripción <span className="font-semibold">*</span></label><textarea id="descripcion" name="descripcion" value={datos.descripcion} onChange={cambiarEntrada} rows="2" placeholder="Descripción..." className={`w-full px-3 py-2 border rounded text-sm resize-none ${errores.descripcion ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.descripcion && <p className="text-xs mt-1">{errores.descripcion}</p>} </div>
+                        <div>
+                            <label htmlFor="descripcion" className="block text-sm mb-1">Descripción <span className="font-semibold">*</span></label>
+                            <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                value={datos.descripcion}
+                                onChange={cambiarEntrada}
+                                rows="2"
+                                placeholder="Descripción..."
+                                aria-invalid={!!errores.descripcion}
+                                className={`w-full px-3 py-2 border rounded text-sm resize-none ${errores.descripcion ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.descripcion && <p className="field-error" role="alert">{errores.descripcion}</p>}
+                        </div>
 
                         <div> <label htmlFor="tecnologias" className="block text-sm mb-1">Tecnologías (separadas por comas)</label><input id="tecnologias" type="text" name="tecnologias" value={datos.tecnologias} onChange={cambiarEntrada} placeholder="React, Node.js, MongoDB" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="enlace" className="block text-sm mb-1">Enlace del Proyecto</label><input id="enlace" type="url" name="enlace" value={datos.enlace} onChange={cambiarEntrada} placeholder="https://proyecto.com" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="github" className="block text-sm mb-1">GitHub</label><input id="github" type="url" name="github" value={datos.github} onChange={cambiarEntrada} placeholder="https://github.com/usuario/repo" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label htmlFor="enlace" className="block text-sm mb-1">Enlace del Proyecto</label>
+                                <input
+                                    id="enlace"
+                                    type="url"
+                                    name="enlace"
+                                    value={datos.enlace}
+                                    onChange={cambiarEntrada}
+                                    onBlur={(e) => {
+                                        const errs = validarProyectoExtras({ ...datos, [e.target.name]: e.target.value });
+                                        setErrores(prev => ({ ...prev, enlace: errs.enlace || '' }));
+                                    }}
+                                    placeholder="https://proyecto.com"
+                                    aria-invalid={!!errores.enlace}
+                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.enlace ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                                />
+                                {errores.enlace && <p className="field-error" role="alert">{errores.enlace}</p>}
+                            </div>
+
+                            <div>
+                                <label htmlFor="github" className="block text-sm mb-1">GitHub</label>
+                                <input
+                                    id="github"
+                                    type="url"
+                                    name="github"
+                                    value={datos.github}
+                                    onChange={cambiarEntrada}
+                                    onBlur={(e) => {
+                                        const errs = validarProyectoExtras({ ...datos, [e.target.name]: e.target.value });
+                                        setErrores(prev => ({ ...prev, github: errs.github || '' }));
+                                    }}
+                                    placeholder="https://github.com/usuario/repo"
+                                    aria-invalid={!!errores.github}
+                                    className={`w-full px-3 py-2 border rounded text-sm ${errores.github ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                                />
+                                {errores.github && <p className="field-error" role="alert">{errores.github}</p>}
+                            </div>
+                        </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"> <div><label htmlFor="fechaInicio" className="block text-sm mb-1">Inicio</label><input id="fechaInicio" type="month" name="fechaInicio" value={datos.fechaInicio} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> <div><label htmlFor="fechaFin" className="block text-sm mb-1">Fin</label><input id="fechaFin" type="month" name="fechaFin" value={datos.fechaFin} onChange={cambiarEntrada} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm" /></div> </div>
 

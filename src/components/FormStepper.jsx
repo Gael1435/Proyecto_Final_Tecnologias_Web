@@ -1,5 +1,5 @@
 // Controlador del stepper: estado y lógica de navegación (Editor)
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useFormStepper } from '../hooks/useFormStepper';
 // Hook de router para navegación programática a /preview
 import { useNavigate } from 'react-router-dom';
@@ -38,11 +38,23 @@ function FormStepper() {
     ];
 
     const CurrentComponent = steps[activeStep].component;
+    
+        const allValid = Object.values(validSteps).every(Boolean);
 
     const handleValidate = useCallback(
         (isValid) => updateStepValidity(activeStep, isValid),
         [activeStep, updateStepValidity]
     );
+
+    // Mensaje global de retroalimentación cuando el usuario intenta acciones
+    // inválidas (ej. avanzar sin validar o intentar abrir paso bloqueado)
+    const [formMessage, setFormMessage] = useState('');
+
+    useEffect(() => {
+        if (!formMessage) return;
+        const t = setTimeout(() => setFormMessage(''), 4000);
+        return () => clearTimeout(t);
+    }, [formMessage]);
 
     return (
         <div className="editor-root flex flex-col lg:flex-row overflow-hidden h-full min-h-0">
@@ -74,8 +86,14 @@ function FormStepper() {
                             <button
                                 key={step.id}
                                 data-step={step.id}
-                                onClick={handleStepClickEvent}
-                                disabled={isDisabled}
+                                onClick={(e) => {
+                                    handleStepClickEvent(e);
+                                    if (isDisabled) {
+                                        if (firstInvalid !== null) setFormMessage(`Completa: ${steps[firstInvalid].label} antes de acceder a este paso`);
+                                        else setFormMessage('No puedes ir a este paso todavía');
+                                    }
+                                }}
+                                aria-disabled={isDisabled}
                                 title={title}
                                 className={`w-full px-4 py-3 text-left text-sm font-medium rounded transition ${isDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}>
                                 {step.label}
@@ -86,7 +104,14 @@ function FormStepper() {
 
                 {/* Acciones en el pie de la barra lateral */}
                 <div className="p-4 text-xs border-t border-slate-200 dark:border-slate-800 lg:sticky lg:bottom-0">
-                    <button type="button" onClick={resetAll} className="w-full mb-3 px-3 py-2 rounded text-sm font-medium border border-red-500 text-red-500">Limpiar todo</button>
+                    <button
+                        type="button"
+                        onClick={() => allValid && navigate('/preview')}
+                        disabled={!allValid}
+                        className={`w-full mb-3 px-3 py-2 rounded text-sm font-medium ${allValid ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white opacity-50 cursor-not-allowed'}`}>
+                        Ir a Preview
+                    </button>
+                    <button type="button" onClick={resetAll} className="w-full mb-3 px-3 py-2 rounded text-sm font-medium border border-red-500 text-red-500 hover:bg-red-500 hover:text-white">Limpiar todo</button>
                     Paso {activeStep + 1} de {steps.length}
                 </div>
             </aside>
@@ -99,18 +124,43 @@ function FormStepper() {
                     </h1>
                     <button type="button" className="lg:hidden px-3 py-2 rounded text-sm" onClick={toggleMenu}>{menuOpen ? 'Ocultar menú' : 'Abrir menú'}</button>
                 </header>
+                {/* Mensaje global de retroalimentación (visible temporalmente) */}
+                {formMessage && (
+                    <div role="alert" className="px-6">
+                        <div className="mb-4 p-3 rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 text-sm">
+                            {formMessage}
+                        </div>
+                    </div>
+                )}
 
                 {/* Renderiza el componente del paso activo */}
                 <main className="flex-1 overflow-y-auto px-8 py-6 min-h-0">
-                    <div className="w-full h-full min-h-0">
-                        <CurrentComponent onValidate={handleValidate} />
+                    <div className="w-full h-full min-h-0 flex justify-center">
+                        <div className="w-full max-w-screen-xl px-4">
+                            <CurrentComponent onValidate={handleValidate} />
+                        </div>
                     </div>
                 </main>
 
                 {/* Pie con botones de navegación */}
                 <footer className="px-6 py-4 flex gap-3 justify-end">
-                    <button onClick={handlePrev} disabled={activeStep === 0} className="px-4 py-2 rounded text-sm transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">Anterior</button>
-                    <button onClick={() => { if (activeStep === steps.length - 1) { navigate('/preview'); return; } handleNext(); }} disabled={!validSteps[activeStep]} className="px-4 py-2 rounded text-sm transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">Siguiente</button>
+                    <button onClick={handlePrev} disabled={activeStep === 0} className="px-4 py-2 rounded text-sm transition duration-200 ease-in-out bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed">Anterior</button>
+                    <button
+                        onClick={() => {
+                            if (activeStep === steps.length - 1) {
+                                navigate('/preview');
+                                return;
+                            }
+                            if (validSteps[activeStep]) {
+                                handleNext();
+                            } else {
+                                setFormMessage('Revisa los campos del paso antes de continuar');
+                            }
+                        }}
+                        aria-disabled={!validSteps[activeStep]}
+                        className={`px-4 py-2 rounded text-sm transition duration-200 ease-in-out bg-blue-600 text-white ${validSteps[activeStep] ? '' : 'opacity-50 cursor-not-allowed'}`}>
+                        Siguiente
+                    </button>
                 </footer>
             </div>
         </div>

@@ -38,6 +38,14 @@ export const useFormHabilidad = (onValidate) => {
             return;
         }
 
+        // Evitar duplicados por nombre (case-insensitive)
+        // Si ya existe una habilidad con el mismo nombre no se añade.
+        const nombreNorm = (datos.nombre || '').trim().toLowerCase();
+        if (habilidades.some(h => String(h.nombre || '').trim().toLowerCase() === nombreNorm)) {
+            setErrores({ nombre: 'La habilidad ya existe' });
+            return;
+        }
+
         const nuevaHabilidad = { id: Date.now(), ...datos };
         setHabilidades([...habilidades, nuevaHabilidad]);
         setDatos({

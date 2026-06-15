@@ -1,5 +1,8 @@
 // Valida nombre, categoría y nivel para una habilidad (Editor)
+// Utiliza reglas globales para comprobar que el `nivel` esté entre
+// los valores permitidos y reuse el helper `required`.
 import { required } from './validationHelpers';
+import { within, nivelesPermitidos } from './validationRules';
 
 export const validarHabilidad = (data) => {
   const base = required([
@@ -9,6 +12,8 @@ export const validarHabilidad = (data) => {
 
   if (!data.nivel) {
     base.nivel = 'El nivel es obligatorio';
+  } else if (!within(data.nivel, nivelesPermitidos)) {
+    base.nivel = 'Nivel inválido';
   }
 
   return base;

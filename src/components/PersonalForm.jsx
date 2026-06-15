@@ -74,7 +74,88 @@ function PersonalForm({ onValidate }) {
                 <div className="p-4 rounded border border-gray-200 dark:border-gray-700">
                     <h2 className="text-base font-semibold mb-4">Datos Personales</h2>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4"> <div><label htmlFor="nombre" className="block text-sm mb-1">Nombre <span className="font-semibold">*</span></label><input id="nombre" type="text" name="nombre" value={datos.nombre} onChange={cambiarEntrada} onBlur={validarAlDesenfoque} placeholder="Tu nombre" className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.nombre && <p className="text-xs mt-1">{errores.nombre}</p>}</div> <div><label htmlFor="carrera" className="block text-sm mb-1">Carrera <span className="font-semibold">*</span></label><input id="carrera" type="text" name="carrera" value={datos.carrera} onChange={cambiarEntrada} onBlur={validarAlDesenfoque} placeholder="Ej: Ingeniería en Sistemas" className={`w-full px-3 py-2 border rounded text-sm ${errores.carrera ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.carrera && <p className="text-xs mt-1">{errores.carrera}</p>}</div> <div><label htmlFor="ciudad" className="block text-sm mb-1">Ciudad <span className="font-semibold">*</span></label><input id="ciudad" type="text" name="ciudad" value={datos.ciudad} onChange={cambiarEntrada} onBlur={validarAlDesenfoque} placeholder="Tu ciudad" className={`w-full px-3 py-2 border rounded text-sm ${errores.ciudad ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.ciudad && <p className="text-xs mt-1">{errores.ciudad}</p>}</div> <div><label htmlFor="email" className="block text-sm mb-1">Email <span className="font-semibold">*</span></label><input id="email" type="email" name="email" value={datos.email} onChange={cambiarEntrada} onBlur={validarAlDesenfoque} placeholder="tu@correo.com" className={`w-full px-3 py-2 border rounded text-sm ${errores.email ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.email && <p className="text-xs mt-1">{errores.email}</p>}</div> <div><label htmlFor="telefono" className="block text-sm mb-1">Teléfono</label><input id="telefono" type="tel" name="telefono" value={datos.telefono} onChange={cambiarEntrada} onBlur={validarAlDesenfoque} placeholder="+34 600 123 456" className={`w-full px-3 py-2 border rounded text-sm ${errores.telefono ? 'border-current' : 'border-gray-300 dark:border-gray-600'}`} />{errores.telefono && <p className="text-xs mt-1">{errores.telefono}</p>}</div> </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <div>
+                            <label htmlFor="nombre" className="block text-sm mb-1">Nombre <span className="font-semibold">*</span></label>
+                            <input
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                value={datos.nombre}
+                                onChange={cambiarEntrada}
+                                onBlur={validarAlDesenfoque}
+                                placeholder="Tu nombre"
+                                aria-invalid={!!errores.nombre}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.nombre ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.nombre && <p className="field-error" role="alert">{errores.nombre}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="carrera" className="block text-sm mb-1">Carrera <span className="font-semibold">*</span></label>
+                            <input
+                                id="carrera"
+                                type="text"
+                                name="carrera"
+                                value={datos.carrera}
+                                onChange={cambiarEntrada}
+                                onBlur={validarAlDesenfoque}
+                                placeholder="Ej: Ingeniería en Sistemas"
+                                aria-invalid={!!errores.carrera}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.carrera ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.carrera && <p className="field-error" role="alert">{errores.carrera}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="ciudad" className="block text-sm mb-1">Ciudad <span className="font-semibold">*</span></label>
+                            <input
+                                id="ciudad"
+                                type="text"
+                                name="ciudad"
+                                value={datos.ciudad}
+                                onChange={cambiarEntrada}
+                                onBlur={validarAlDesenfoque}
+                                placeholder="Tu ciudad"
+                                aria-invalid={!!errores.ciudad}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.ciudad ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.ciudad && <p className="field-error" role="alert">{errores.ciudad}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm mb-1">Email <span className="font-semibold">*</span></label>
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                value={datos.email}
+                                onChange={cambiarEntrada}
+                                onBlur={validarAlDesenfoque}
+                                placeholder="tu@correo.com"
+                                aria-invalid={!!errores.email}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.email && <p className="field-error" role="alert">{errores.email}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="telefono" className="block text-sm mb-1">Teléfono</label>
+                            <input
+                                id="telefono"
+                                type="tel"
+                                name="telefono"
+                                value={datos.telefono}
+                                onChange={cambiarEntrada}
+                                onBlur={validarAlDesenfoque}
+                                placeholder="+34 600 123 456"
+                                aria-invalid={!!errores.telefono}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.telefono ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            />
+                            {errores.telefono && <p className="field-error" role="alert">{errores.telefono}</p>}
+                        </div>
+                    </div>
 
                     <div className="mb-4">
                         <label htmlFor="descripcion" className="block text-sm mb-1">
@@ -100,78 +181,83 @@ function PersonalForm({ onValidate }) {
                     
                     <div className="space-y-3">
                         <div>
-                            <label htmlFor="github" className="block text-sm mb-1">
-                                GitHub
-                            </label>
-                            <input 
-                                id="github" 
-                                type="url" 
+                            <label htmlFor="github" className="block text-sm mb-1">GitHub</label>
+                            <input
+                                id="github"
+                                type="url"
                                 name="github"
                                 value={datos.github}
                                 onChange={cambiarEntrada}
-                                placeholder="https://github.com/usuario" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
+                                onBlur={validarAlDesenfoque}
+                                placeholder="https://github.com/usuario"
+                                aria-invalid={!!errores.github}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.github ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                             />
+                            {errores.github && <p className="field-error" role="alert">{errores.github}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="linkedin" className="block text-sm mb-1">
-                                LinkedIn
-                            </label>
-                            <input 
-                                id="linkedin" 
-                                type="url" 
+                            <label htmlFor="linkedin" className="block text-sm mb-1">LinkedIn</label>
+                            <input
+                                id="linkedin"
+                                type="url"
                                 name="linkedin"
                                 value={datos.linkedin}
                                 onChange={cambiarEntrada}
-                                placeholder="https://linkedin.com/in/usuario" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
+                                onBlur={validarAlDesenfoque}
+                                placeholder="https://linkedin.com/in/usuario"
+                                aria-invalid={!!errores.linkedin}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.linkedin ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                             />
+                            {errores.linkedin && <p className="field-error" role="alert">{errores.linkedin}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="portafolio" className="block text-sm mb-1">
-                                Portafolio
-                            </label>
-                            <input 
-                                id="portafolio" 
-                                type="url" 
+                            <label htmlFor="portafolio" className="block text-sm mb-1">Portafolio</label>
+                            <input
+                                id="portafolio"
+                                type="url"
                                 name="portafolio"
                                 value={datos.portafolio}
                                 onChange={cambiarEntrada}
-                                placeholder="https://miportafolio.com" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
+                                onBlur={validarAlDesenfoque}
+                                placeholder="https://miportafolio.com"
+                                aria-invalid={!!errores.portafolio}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.portafolio ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                             />
+                            {errores.portafolio && <p className="field-error" role="alert">{errores.portafolio}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="repositorio" className="block text-sm mb-1">
-                                Repositorio Principal
-                            </label>
-                            <input 
-                                id="repositorio" 
-                                type="url" 
+                            <label htmlFor="repositorio" className="block text-sm mb-1">Repositorio Principal</label>
+                            <input
+                                id="repositorio"
+                                type="url"
                                 name="repositorio"
                                 value={datos.repositorio}
                                 onChange={cambiarEntrada}
-                                placeholder="https://github.com/usuario/principal" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
+                                onBlur={validarAlDesenfoque}
+                                placeholder="https://github.com/usuario/principal"
+                                aria-invalid={!!errores.repositorio}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.repositorio ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                             />
+                            {errores.repositorio && <p className="field-error" role="alert">{errores.repositorio}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="enlacePersonal" className="block text-sm mb-1">
-                                Enlace Personalizado
-                            </label>
-                            <input 
-                                id="enlacePersonal" 
-                                type="url" 
+                            <label htmlFor="enlacePersonal" className="block text-sm mb-1">Enlace Personalizado</label>
+                            <input
+                                id="enlacePersonal"
+                                type="url"
                                 name="enlacePersonal"
                                 value={datos.enlacePersonal}
                                 onChange={cambiarEntrada}
-                                placeholder="https://ejemplo.com" 
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm"
+                                onBlur={validarAlDesenfoque}
+                                placeholder="https://ejemplo.com"
+                                aria-invalid={!!errores.enlacePersonal}
+                                className={`w-full px-3 py-2 border rounded text-sm ${errores.enlacePersonal ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                             />
+                            {errores.enlacePersonal && <p className="field-error" role="alert">{errores.enlacePersonal}</p>}
                         </div>
                     </div>
                 </div>

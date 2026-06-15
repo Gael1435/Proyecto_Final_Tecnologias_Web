@@ -19,7 +19,66 @@ body{
 
     font-family: 'Poppins', sans-serif;
 
-    transition: 0.3s;
+}
+
+/* Asegurar que los inputs hereden el color del texto del documento
+     para evitar que el navegador cambie el color a negro en autofill */
+input, textarea, select {
+    color: inherit !important;
+}
+
+/* Mensajes de error: hacerlos accesibles y consistentes */
+.field-error {
+    color: #dc2626; /* red-600 */
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+/* Nota: se eliminó la regla global de autofill que afectaba inputs en tema oscuro.
+   Si se necesita manejar autofill de forma localizada, se aplicará por ID/clase
+   únicamente dentro de los componentes del Editor. */
+
+/* Autofill/selección local al Editor: color simple por tema
+   - Light: fondo blanco, texto oscuro
+   - Dark: fondo negro, texto blanco
+   Esto reemplaza reglas más complejas y es menos propenso a efectos colaterales. */
+/* Light theme autofill */
+body.light .editor-root input:-webkit-autofill,
+body.light .editor-root textarea:-webkit-autofill,
+body.light .editor-root select:-webkit-autofill,
+body.light .editor-root input:-webkit-autofill:hover,
+body.light .editor-root textarea:-webkit-autofill:hover,
+body.light .editor-root select:-webkit-autofill:hover,
+body.light .editor-root input:-webkit-autofill:focus,
+body.light .editor-root textarea:-webkit-autofill:focus,
+body.light .editor-root select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #0f172a !important; /* slate-900 */
+}
+
+/* Dark theme autofill */
+body.dark .editor-root input:-webkit-autofill,
+body.dark .editor-root textarea:-webkit-autofill,
+body.dark .editor-root select:-webkit-autofill,
+body.dark .editor-root input:-webkit-autofill:hover,
+body.dark .editor-root textarea:-webkit-autofill:hover,
+body.dark .editor-root select:-webkit-autofill:hover,
+body.dark .editor-root input:-webkit-autofill:focus,
+body.dark .editor-root textarea:-webkit-autofill:focus,
+body.dark .editor-root select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #0f0f0f inset !important;
+    box-shadow: 0 0 0px 1000px #0f0f0f inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Mantener selección visible pero neutra dentro del editor */
+body.light .editor-root input::selection,
+body.light .editor-root textarea::selection {
+    background-color: rgba(255,255,255,0.9) !important;
+}
+body.dark .editor-root input::selection,
+body.dark .editor-root textarea::selection {
+    background-color: rgba(15,15,15,0.9) !important;
 }
 
 /* NAVBAR */

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { validarProyecto } from '../utils/Editor/validarProyecto';
+import { validarProyecto, validarProyectoExtras } from '../utils/Editor/validarProyecto';
 import { useLocalStorage } from './useLocalStorage';
 
 // Hook para gestionar proyectos: lista, formulario y validaciones
@@ -37,9 +37,22 @@ export const useFormProyecto = (onValidate) => {
     // Valida y agrega un proyecto a la lista
     const agregarProyecto = (e) => {
         e.preventDefault();
-        const nuevosErrores = validarProyecto(datos);
+        // Combina validación base y validaciones extra (longitudes, URLs)
+        const nuevosErrores = { ...validarProyecto(datos), ...validarProyectoExtras(datos) };
         if (Object.keys(nuevosErrores).length > 0) {
             setErrores(nuevosErrores);
+            return;
+        }
+        // Evitar proyectos duplicados por nombre o enlace
+        // Comprobación por nombre (case-insensitive)
+        const nombreNorm = (datos.nombre || '').trim().toLowerCase();
+        if (proyectos.some(p => String(p.nombre || '').trim().toLowerCase() === nombreNorm)) {
+            setErrores({ nombre: 'Ya existe un proyecto con ese nombre' });
+            return;
+        }
+        // Comprobación por enlace exacto si se ha proporcionado
+        if (datos.enlace && proyectos.some(p => p.enlace && p.enlace === datos.enlace)) {
+            setErrores({ enlace: 'Ya existe un proyecto con ese enlace' });
             return;
         }
 

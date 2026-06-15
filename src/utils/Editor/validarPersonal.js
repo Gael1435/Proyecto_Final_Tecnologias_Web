@@ -1,5 +1,8 @@
 // Valida campos personales y formatos (email, teléfono) usados en el Editor
+// Contiene validaciones específicas del formulario personal; usa
+// funciones genéricas de `validationRules` para reglas comunes.
 import { required } from './validationHelpers';
+import { isValidURL, minLength, maxLength, isValidEmail, isValidPhone } from './validationRules';
 
 export const validarPersonal = (data) => {
   const errors = required([
@@ -10,12 +13,29 @@ export const validarPersonal = (data) => {
     { name: 'descripcion', message: 'La descripción es obligatoria' }
   ], data);
 
-  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+  // Validación de formatos básicos
+  if (data.email && !isValidEmail(data.email)) {
     errors.email = 'Email inválido';
   }
 
-  if (data.telefono && !/^[\d\s\-\+\(\)]{7,}$/.test(data.telefono)) {
+  if (data.telefono && !isValidPhone(data.telefono)) {
     errors.telefono = 'Teléfono inválido';
+  }
+
+  // URLs de enlaces profesionales (si están rellenadas)
+  ['github', 'linkedin', 'portafolio', 'repositorio', 'enlacePersonal'].forEach((f) => {
+    if (data[f] && String(data[f]).trim() !== '' && !isValidURL(data[f])) {
+      errors[f] = 'URL inválida';
+    }
+  });
+
+  // Longitud mínima/máxima para descripción
+  if (data.descripcion) {
+    if (!minLength(data.descripcion, 10)) {
+      errors.descripcion = 'La descripción es muy corta (mínimo 10 caracteres)';
+    } else if (!maxLength(data.descripcion, 1000)) {
+      errors.descripcion = 'La descripción es demasiado larga (máximo 1000 caracteres)';
+    }
   }
 
   return errors;
